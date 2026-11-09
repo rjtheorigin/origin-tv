@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="262dp"
+    android:layout_marginHorizontal="22dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_hero"
+    android:clipToOutline="true"
+    android:outlineProvider="background">
+
+    <!-- The poster at its true 16:9 shape on the right, so nothing is cropped or stretched. -->
+    <ImageView
+        android:id="@+id/hero_image"
+        android:layout_width="466dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:contentDescription="@null"
+        android:foreground="#33000000"
+        android:scaleType="centerCrop" />
+
+    <!-- Its left edge fades into the solid panel the text sits on. -->
+    <View
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginEnd="216dp"
+        android:background="@drawable/bg_hero_fade_left" />
+
+    <View
+        android:layout_width="466dp"
+        android:layout_height="64dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/bg_hero_fade_top" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_hero_fade_bottom" />
+
+    <ImageView
+        android:id="@+id/hero_logo"
+        android:layout_width="78dp"
+        android:layout_height="44dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_plate_small"
+        android:contentDescription="@null"
+        android:padding="5dp"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:orientation="vertical"
+        android:paddingStart="26dp"
+        android:paddingBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="3dp"
+                android:layout_height="14dp"
+                android:background="@color/live" />
+
+            <TextView
+                android:id="@+id/hero_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/outfit_medium"
+                android:letterSpacing="0.14"
+                android:textColor="@color/text"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/hero_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit_medium"
+            android:maxLines="2"
+            android:textColor="#ffffff"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/hero_meta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#d9d2f5"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hero_watch"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_hero_button"
+                android:drawableStart="@drawable/ic_play"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/hero_button_text"
+                android:focusable="true"
+                android:fontFamily="@font/outfit_medium"
+                android:gravity="center"
+                android:paddingHorizontal="22dp"
+                android:textColor="@color/hero_button_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/hero_info"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_hero_button"
+                android:drawableStart="@drawable/ic_info"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/hero_button_text"
+                android:focusable="true"
+                android:fontFamily="@font/outfit_medium"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/hero_button_text"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/hero_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" />
+</FrameLayout>

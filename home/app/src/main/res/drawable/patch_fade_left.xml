@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The hero picture fades into the page on its left, where the text sits. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:angle="0" android:startColor="#FF050507" android:centerColor="#80050507" android:endColor="#00050507" />
+</shape>

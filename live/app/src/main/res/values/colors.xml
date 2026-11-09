@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Joshi TV: deep violet night, violet and magenta light, from the logo. -->
+<resources>
+    <color name="bg">#0d0b1a</color>
+    <color name="card">#1a1630</color>
+    <color name="line">#2f2852</color>
+    <color name="raised">#2a2350</color>
+    <color name="text">#f4f1ff</color>
+    <color name="muted">#a7a0c8</color>
+    <color name="accent">#a98bff</color>
+    <color name="accent2">#ff4d8d</color>
+    <color name="live">#ff3b5c</color>
+    <color name="focus">#ede8ff</color>
+    <color name="focus_text">#1a1240</color>
+    <color name="focus_sub">#4a3f78</color>
+    <color name="plate">#4b4570</color>
+    <color name="nav_bg">#0b0917</color>
+</resources>

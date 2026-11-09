@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The focus ring around cards and tiles: a bright violet edge, nothing when not focused. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape><solid android:color="#00000000" /><stroke android:width="3dp" android:color="#c4b0ff" /><corners android:radius="17dp" /></shape>
+    </item>
+    <item>
+        <shape><solid android:color="#00000000" /><stroke android:width="3dp" android:color="#00000000" /><corners android:radius="17dp" /></shape>
+    </item>
+</selector>

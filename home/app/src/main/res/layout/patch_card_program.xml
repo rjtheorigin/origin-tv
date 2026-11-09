@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    android:background="@drawable/patch_ring"
+    android:focusable="true"
+    android:padding="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:background="@drawable/patch_card_bg"
+            android:clipToOutline="true"
+            android:outlineProvider="background">
+
+            <ImageView
+                android:id="@+id/patch_poster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/patch_logo"
+                android:layout_width="48dp"
+                android:layout_height="27dp"
+                android:layout_margin="6dp"
+                android:background="@drawable/patch_logo_bg"
+                android:contentDescription="@null"
+                android:padding="3dp"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/patch_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="7dp"
+                android:background="@drawable/patch_tag_live"
+                android:fontFamily="@font/outfit_medium"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
+                android:textColor="#FFFFFFFF"
+                android:textSize="11sp" />
+
+            <ProgressBar
+                android:id="@+id/patch_progress"
+                style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:max="1000"
+                android:progressBackgroundTint="#66000000"
+                android:progressTint="#FFE53935" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/patch_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit_medium"
+            android:maxLines="1"
+            android:paddingHorizontal="4dp"
+            android:paddingTop="6dp"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/patch_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit_regular"
+            android:maxLines="1"
+            android:paddingHorizontal="4dp"
+            android:paddingBottom="2dp"
+            android:textColor="#8CFFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+</FrameLayout>

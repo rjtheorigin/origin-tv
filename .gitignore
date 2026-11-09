@@ -1,0 +1,28 @@
+# Build output
+build/
+.gradle/
+local.properties
+*.apk
+dist/
+release/
+
+# Release signing key and its passwords: keep a private backup, never commit
+signing/
+*.jks
+*.keystore
+
+# JioTV Go binary: built by server/build-jiotv-go.sh, shipped in the release APK only
+live/app/src/main/jniLibs/**/libjiotvgo.so
+
+# The installer's Python environment
+tools/venv/
+__pycache__/
+
+# Editors and OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Java font cache from tools/brand/MakeBrand.java run in Docker without a home folder
+/?/

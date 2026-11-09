@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Release signing: signing/release.properties (git-ignored, see scripts/make-release-key.sh) when it exists, so
+// both apps share one key (Joshi TV lets only an app signed like it start its stream server). Without it, a
+// build from source is signed with the local debug key and still installs.
+def releaseProps = new Properties()
+def releasePropsFile = rootProject.file('../signing/release.properties')
+if (releasePropsFile.exists()) releasePropsFile.withInputStream { releaseProps.load(it) }
+
+android {
+    namespace 'io.github.rjtheorigin.joshitv'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'io.github.rjtheorigin.joshitv'
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+        ndk { abiFilters 'armeabi-v7a' }
+    }
+
+    signingConfigs {
+        release {
+            if (releasePropsFile.exists()) {
+                storeFile rootProject.file('../signing/' + releaseProps['storeFile'])
+                storePassword releaseProps['storePassword']
+                keyAlias releaseProps['keyAlias']
+                keyPassword releaseProps['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            signingConfig releasePropsFile.exists() ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    packaging {
+        jniLibs {
+            // The stream server is an executable that Android must unpack to run. Keep it exactly as built.
+            useLegacyPackaging true
+            keepDebugSymbols += ['**/libjiotvgo.so']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    def media3 = '1.4.1' // The last line that builds with compileSdk 34.
+    implementation "androidx.media3:media3-exoplayer:$media3"
+    implementation "androidx.media3:media3-exoplayer-dash:$media3"
+    implementation "androidx.media3:media3-exoplayer-hls:$media3"
+    implementation "androidx.media3:media3-ui:$media3"
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+}

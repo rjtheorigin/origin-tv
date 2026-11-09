@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="1dp"
+    android:background="@drawable/patch_tab_bg"
+    android:focusable="true"
+    android:fontFamily="@font/outfit_medium"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="5dp"
+    android:textColor="@color/patch_tab_text"
+    android:textSize="17sp" />

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Joshi TV as a channel source for Live Channels: its setup screen copies the channel list. -->
+<tv-input xmlns:android="http://schemas.android.com/apk/res/android"
+    android:setupActivity="io.github.rjtheorigin.joshitv.LiveSetupActivity" />

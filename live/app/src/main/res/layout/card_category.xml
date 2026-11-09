@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="108dp"
+    android:layout_height="80dp"
+    android:layout_marginEnd="6dp"
+    android:background="@drawable/bg_ring"
+    android:focusable="true"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawablePadding="4dp"
+        android:drawableTint="#ffffff"
+        android:fontFamily="@font/outfit_medium"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:textColor="#ffffff"
+        android:textSize="14sp" />
+</FrameLayout>

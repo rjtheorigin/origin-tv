@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0B0E17">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Joshi TV">
+  <link rel="icon" href="/icon.png">
+  <link rel="apple-touch-icon" href="/icon.png">
+  <title>Joshi TV</title>
+  <style>
+    :root {
+      --bg: #0B0E17; --card: #121827; --pill: #1A2136; --line: rgba(255, 255, 255, .08);
+      --purple: #6447CE; --purple-soft: #A58BFF; --yellow: #FFED4C; --teal: #33BF7F; --red: #F26D6D;
+      --text: #F3F4F6; --soft: #CBD5E1; --dim: #94A3B8;
+      --raise: inset 0 1px 1px rgba(255, 255, 255, .1), 0 8px 20px rgba(0, 0, 0, .5);
+      --dial: min(272px, 68vw);
+      color-scheme: dark;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+    }
+    @supports (height: 1dvh) { :root { --dial: min(272px, 68vw, 36dvh); } }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; scrollbar-width: none; }
+    ::-webkit-scrollbar { display: none; }
+    html, body { height: 100%; margin: 0; background: #06080e; color: var(--text); overflow: hidden; overscroll-behavior: none; }
+    body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    h1 { font-size: 24px; letter-spacing: -.02em; margin: 6px 0 14px; }
+    h2 { font-size: 15px; margin: 0 0 4px; }
+    p { margin: 0; line-height: 1.45; font-size: 14px; color: var(--dim); }
+    button, input { font: inherit; color: inherit; }
+    button { cursor: pointer; padding: 0; background: none; border: 0; touch-action: manipulation; }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--purple-soft); outline-offset: 2px; }
+    svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+    [hidden] { display: none !important; }
+
+    #shell, #pair-view { position: fixed; inset: 0; margin: 0 auto; max-width: 430px; background: var(--bg); overflow: hidden; }
+    #shell { display: flex; flex-direction: column; }
+    .glow { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%; pointer-events: none; }
+    .glow.a { top: 40px; width: 256px; height: 256px; background: rgba(100, 71, 206, .2); filter: blur(80px); }
+    .glow.b { bottom: 96px; width: 192px; height: 192px; background: rgba(6, 182, 212, .15); filter: blur(70px); }
+    #views { position: relative; z-index: 1; flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    .view { padding: max(12px, env(safe-area-inset-top)) 20px 16px; }
+    #view-remote { min-height: 100%; display: flex; flex-direction: column; }
+    .dial-zone { flex: 1; display: grid; place-items: center; }
+
+    .key { background: var(--pill); border: 1px solid var(--line); box-shadow: var(--raise); border-radius: 18px; color: var(--soft);
+      min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 4px; transition: transform .15s cubic-bezier(.4, 0, .2, 1), filter .15s; }
+    .key.down, .key:active { transform: scale(.94); filter: brightness(.9); }
+    .round { width: 44px; min-height: 44px; height: 44px; border-radius: 16px; }
+    .power { background: var(--purple); color: #fff; border-color: rgba(129, 140, 248, .4); box-shadow: 0 0 20px rgba(100, 71, 206, .55); }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .status { min-width: 0; max-width: 62%; display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px; background: rgba(26, 33, 54, .9);
+      border: 1px solid var(--line); box-shadow: var(--raise); font-size: 13px; font-weight: 500; color: var(--soft); }
+    .status span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
+    .dot.on { background: var(--teal); box-shadow: 0 0 12px rgba(51, 191, 127, .6); }
+    .dot.off { background: var(--red); }
+    .dot.wait { background: var(--yellow); }
+    .capsule { display: flex; align-items: center; background: rgba(18, 23, 38, .8); border: 1px solid var(--line); border-radius: 18px; padding: 5px; box-shadow: var(--raise); margin-bottom: 8px; }
+    .capsule button { flex: 1; min-height: 34px; display: flex; align-items: center; justify-content: center; color: var(--dim); border-radius: 12px; }
+    .capsule button:active { background: rgba(30, 41, 59, .6); color: #fff; }
+    .capsule i { width: 1px; height: 16px; background: #1e293b; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 8px; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 8px; }
+    .play { color: var(--yellow); }
+    .play svg { fill: currentColor; stroke: none; }
+    .ch { font-size: 13px; font-weight: 600; color: var(--dim); }
+    .ch svg { width: 14px; height: 14px; }
+
+    .dial { position: relative; width: var(--dial); height: var(--dial); margin: 12px auto; border-radius: 50%; display: grid; place-items: center; touch-action: none;
+      background: radial-gradient(circle at 50% 50%, #1e2742 0%, #13192c 60%, #0d1220 100%);
+      border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 12px 36px rgba(0, 0, 0, .7), inset 0 1px 2px rgba(255, 255, 255, .15); }
+    .ring { position: absolute; inset: 6.5%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .04); pointer-events: none; }
+    .chev { position: absolute; color: var(--dim); pointer-events: none; transition: color .1s, filter .1s; display: flex; padding: 8px; }
+    .chev svg { width: 24px; height: 24px; stroke-width: 2.5; }
+    .chev.up { top: 4%; left: 50%; transform: translateX(-50%); }
+    .chev.down { bottom: 4%; left: 50%; transform: translateX(-50%); }
+    .chev.left { left: 4%; top: 50%; transform: translateY(-50%); }
+    .chev.right { right: 4%; top: 50%; transform: translateY(-50%); }
+    .chev.lit { color: var(--purple-soft); filter: drop-shadow(0 0 8px rgba(100, 71, 206, .95)); }
+    .ok { position: relative; z-index: 1; width: 38%; aspect-ratio: 1; border-radius: 50%; font-weight: 700; font-size: 16px; letter-spacing: .08em; color: #fff; will-change: transform; touch-action: none;
+      background: radial-gradient(circle at 45% 40%, #2b3558 0%, #1b2238 75%, #13182a 100%);
+      border: 1px solid rgba(255, 255, 255, .2); box-shadow: 0 6px 16px rgba(0, 0, 0, .6), inset 0 1px 2px rgba(255, 255, 255, .25); }
+    .ok.spring { transition: transform .26s cubic-bezier(.3, 1.7, .5, 1); }
+    .ok.pressed { border-color: var(--purple-soft); }
+
+    .type { display: flex; align-items: center; gap: 8px; margin: 12px 0 10px; padding: 5px 6px 5px 12px; background: rgba(18, 24, 39, .7); border: 1px solid var(--line); border-radius: 18px; box-shadow: inset 0 2px 6px rgba(0, 0, 0, .3); }
+    .type svg { width: 16px; height: 16px; color: var(--dim); }
+    .type input { flex: 1; min-width: 0; height: 34px; background: none; border: 0; outline: 0; font-size: 16px; color: #fff; -webkit-user-select: text; user-select: text; }
+    .type input::placeholder { color: #64748b; }
+    .send { flex: none; min-width: 58px; height: 32px; padding: 0 12px; border-radius: 10px; background: var(--purple); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+    .pills { display: flex; gap: 9px; overflow-x: auto; padding: 2px 20px 4px; margin: 0 -20px; -webkit-overflow-scrolling: touch; }
+    .chip { flex: none; display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 13px; border-radius: 13px; border: 1px solid var(--line); background: rgba(26, 33, 54, .7); font-size: 13px; font-weight: 500; color: var(--soft); white-space: nowrap; transition: transform .15s; }
+    .chip:active { transform: scale(.94); }
+    .chip b { font-weight: 800; font-size: 12px; }
+    .chip u { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .chip.red { background: rgba(69, 10, 10, .4); border-color: rgba(153, 27, 27, .45); color: #f87171; }
+    .chip.sky { background: rgba(8, 47, 73, .4); border-color: rgba(7, 89, 133, .45); color: #38bdf8; }
+    .chip.green { background: rgba(2, 44, 34, .35); border-color: rgba(4, 120, 87, .4); color: #34d399; }
+    .chip.violet { background: rgba(46, 16, 101, .4); border-color: rgba(109, 40, 217, .4); color: #c4b5fd; }
+    .chip.blue { background: rgba(23, 37, 84, .45); border-color: rgba(29, 78, 216, .45); color: #93c5fd; }
+    .chip.orange { background: rgba(67, 20, 7, .4); border-color: rgba(194, 65, 12, .4); color: #fb923c; }
+
+    #notice { margin-bottom: 8px; padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.4; color: #fde68a; background: rgba(120, 83, 15, .25); border: 1px solid rgba(217, 119, 6, .4); }
+    #toast { position: fixed; z-index: 30; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom)); transform: translateX(-50%); max-width: 86vw; padding: 9px 14px; border-radius: 12px; font-size: 13px; background: #232b45; border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(0, 0, 0, .5); pointer-events: none; opacity: 0; transition: opacity .2s; }
+    #toast.show { opacity: 1; }
+
+    .tabs { position: relative; z-index: 2; flex: none; display: flex; justify-content: space-between; padding: 8px 20px max(10px, env(safe-area-inset-bottom)); background: rgba(14, 19, 34, .95); border-top: 1px solid var(--line); }
+    .tabs button { flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 500; letter-spacing: .03em; color: #64748b; }
+    .tabs button.active { color: var(--purple-soft); font-weight: 600; }
+    .tabs button.active svg { filter: drop-shadow(0 0 8px rgba(100, 71, 206, .8)); }
+
+    .search { width: 100%; height: 44px; padding: 0 14px; margin-bottom: 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(18, 24, 39, .7); font-size: 16px; -webkit-user-select: text; user-select: text; outline: 0; }
+    .label { font-size: 13px; font-weight: 600; color: var(--soft); margin: 4px 0 8px; }
+    .strip { display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 12px; margin: 0 -20px; }
+    .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .tile { display: block; width: 100%; min-width: 0; text-align: left; transition: transform .15s; }
+    .tile:active { transform: scale(.96); }
+    .strip .tile { flex: none; width: 150px; }
+    .art { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: var(--pill); border: 1px solid var(--line); }
+    .art em { position: absolute; inset: 0; display: grid; place-items: center; font-style: normal; font-size: 26px; font-weight: 700; color: #475569; }
+    .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .2s; }
+    .art img.ready { opacity: 1; }
+    .tile strong { display: block; margin-top: 6px; font-size: 13px; font-weight: 500; color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile small { display: block; margin-top: 1px; font-size: 11px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .card { background: rgba(18, 24, 39, .8); border: 1px solid var(--line); border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: var(--raise); }
+    .card h2 { display: flex; align-items: center; gap: 8px; }
+    .card ol { margin: 10px 0 8px; padding-left: 20px; font-size: 14px; line-height: 1.6; color: var(--soft); }
+    .card .warn { margin-top: 8px; color: #fde68a; font-size: 13px; }
+    .primary { width: 100%; min-height: 50px; margin-top: 12px; border-radius: 14px; background: var(--purple); color: #fff; font-weight: 650; box-shadow: 0 0 20px rgba(100, 71, 206, .4); }
+    .primary:active { filter: brightness(.9); }
+    .line { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 48px; font-size: 15px; color: var(--soft); text-align: left; }
+    .line + .line { border-top: 1px solid var(--line); }
+    .line span:last-child { color: var(--dim); font-size: 14px; }
+    .line.danger, .line.danger span { color: var(--red); }
+    .switch { position: relative; width: 44px; height: 26px; flex: none; }
+    .switch input { position: absolute; inset: 0; opacity: 0; margin: 0; }
+    .switch i { position: absolute; inset: 0; border-radius: 99px; background: #334155; transition: background .15s; pointer-events: none; }
+    .switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .15s; }
+    .switch input:checked + i { background: var(--purple); }
+    .switch input:checked + i::after { transform: translateX(18px); }
+
+    .sheet { position: fixed; z-index: 20; inset: 0; }
+    .scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, .55); }
+    .panel { position: absolute; left: 0; right: 0; bottom: 0; max-width: 430px; margin: 0 auto; padding: 16px 20px max(20px, env(safe-area-inset-bottom)); background: #101626; border: 1px solid var(--line); border-radius: 24px 24px 0 0; }
+    .panel .grid3 { gap: 10px; margin-bottom: 10px; }
+    .panel .key { min-height: 50px; font-weight: 600; font-size: 16px; }
+    .panel .small { font-size: 13px; }
+
+    #pair-view { z-index: 10; display: flex; flex-direction: column; justify-content: center; padding: 24px; }
+    #pair-view p { margin-bottom: 16px; position: relative; }
+    #pair-view h1 { position: relative; }
+    #pair-form { position: relative; display: flex; gap: 10px; }
+    #pair-form input { flex: 1; min-width: 0; height: 50px; padding: 0 14px; border-radius: 14px; border: 1px solid #536079; background: #111827; font-size: 20px; letter-spacing: .1em; -webkit-user-select: text; user-select: text; }
+    #pair-form .primary { width: 96px; margin: 0; }
+
+    @media (max-height: 720px) {
+      .key { min-height: 46px; }
+      .round { min-height: 40px; height: 40px; width: 40px; }
+      .dial { margin: 8px auto; }
+      .type { margin: 8px 0; }
+    }
+
+    /* ---- Live TV, laid out like the JioTV guide: a large picture, then rows of logo, poster and programmes. */
+    #view-live { padding: max(8px, env(safe-area-inset-top)) 0 18px; }
+    .live-head { display: flex; align-items: center; gap: 10px; padding: 0 14px 8px; }
+    .live-head img { width: 34px; height: 34px; border-radius: 10px; object-fit: cover; }
+    .live-head b { flex: 1; font-size: 21px; letter-spacing: -.02em; }
+    .live-head button { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: var(--pill); }
+    #live-search { display: block; width: calc(100% - 24px); margin: 0 12px 8px; padding: 10px 14px; border-radius: 13px; border: 1px solid var(--line); background: var(--pill); }
+    .hero { position: relative; margin: 0 12px; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000 center / cover no-repeat; }
+    .on-phone .hero { position: sticky; top: env(safe-area-inset-top); z-index: 3; }
+    .hero video { position: absolute; inset: 0; width: 100%; height: 100%; background: #000; }
+    .hero span { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 14px 10px; font-size: 13px; font-weight: 600; background: linear-gradient(transparent, rgba(0, 0, 0, .8)); }
+    .live-now { display: flex; align-items: center; gap: 12px; padding: 10px 14px 4px; min-height: 66px; }
+    .live-now i, .row .logo { display: grid; place-items: center; flex: none; background: #2a2f3c; }
+    .live-now i { width: 52px; height: 52px; border-radius: 13px; }
+    .live-now img { max-width: 44px; max-height: 40px; }
+    .live-now div { min-width: 0; flex: 1; }
+    .live-now b, .live-now small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .live-now b { font-size: 15px; }
+    .live-now small { margin-top: 2px; font-size: 12px; color: var(--dim); }
+    .live-keys { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 6px 14px 2px; }
+    .live-keys button { height: 42px; border-radius: 13px; background: var(--pill); font-size: 13px; font-weight: 600; }
+    .live-keys button:active { background: var(--purple); }
+    .on-phone .live-keys { display: none; }
+    .where { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 10px 14px 8px; padding: 4px; border-radius: 15px; background: var(--pill); }
+    .where button { height: 38px; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--dim); }
+    .where button.active { background: var(--purple); color: #fff; }
+    #view-live .pills { margin: 0; padding: 2px 14px 6px; }
+    #view-live .chip { color: var(--text); background: var(--pill); border-color: var(--line); font-size: 13px; font-weight: 600; }
+    #live-note { padding: 2px 14px 6px; font-size: 12px; }
+    .row { display: flex; gap: 8px; padding: 4px 0 4px 12px; }
+    .row .logo { width: 84px; height: 84px; border-radius: 16px; }
+    .row .logo img { max-width: 70px; max-height: 62px; }
+    .row .logo em { padding: 4px; font-size: 11px; font-style: normal; text-align: center; overflow: hidden; }
+    .shows { display: flex; flex: 1; min-width: 0; gap: 8px; overflow-x: auto; padding-right: 12px; -webkit-overflow-scrolling: touch; }
+    .shows img { flex: none; width: 62px; height: 84px; border-radius: 14px; object-fit: cover; background: #1b1f2b; }
+    .show { flex: none; width: 164px; height: 84px; padding: 10px 12px; border-radius: 16px; background: #1b1f2b; text-align: left; display: flex; flex-direction: column; justify-content: space-between; }
+    .show b { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .show small { font-size: 12px; color: var(--dim); }
+    .show.next b { color: var(--soft); font-weight: 500; }
+    .show i { display: block; height: 3px; margin-top: 3px; border-radius: 2px; overflow: hidden; background: #3a4152; }
+    .show i u { display: block; height: 100%; background: var(--red); }
+    #live-more { height: 1px; }
+    .filters { max-height: 62vh; overflow-y: auto; }
+    .filters h2 { margin: 12px 0 8px; color: var(--dim); }
+    .filters div { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filters button { padding: 9px 13px; border-radius: 12px; background: var(--pill); font-size: 13px; }
+    .filters button.active { background: var(--purple); color: #fff; }
+  </style>
+</head>
+<body>
+  <section id="pair-view" hidden>
+    <div class="glow a"></div>
+    <h1>Pair this phone</h1>
+    <p>On the TV, hold OK on the Home screen’s Settings button, choose <b>Phone remote</b>, then <b>New pairing code</b>.</p>
+    <form id="pair-form">
+      <input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" aria-label="Six-digit code" placeholder="000000" required>
+      <button class="primary" type="submit">Pair</button>
+    </form>
+  </section>
+
+  <div id="shell" hidden>
+    <div class="glow a"></div>
+    <div class="glow b"></div>
+    <main id="views">
+      <section id="view-remote" class="view" aria-label="Remote">
+        <header class="top">
+          <button id="mic" class="key round" type="button" aria-label="Voice typing">
+            <svg class="i" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          </button>
+          <button id="status" class="status" type="button" aria-label="Connection status">
+            <span id="status-dot" class="dot wait"></span><span id="status-text">Connecting…</span>
+            <svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <button class="key round power" type="button" data-action="power" aria-label="Power">
+            <svg class="i" viewBox="0 0 24 24" style="stroke-width:2.4"><path d="M12 3v9M6.3 6.3a8 8 0 1011.4 0"/></svg>
+          </button>
+        </header>
+
+        <div id="notice" role="status" hidden></div>
+
+        <div class="capsule">
+          <button type="button" data-tab="live" aria-label="Live TV"><svg class="i" viewBox="0 0 24 24"><path d="M8 3l4 4 4-4M4 7h16a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/></svg></button><i></i>
+          <button type="button" id="open-keypad" aria-label="Keypad"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg></button><i></i>
+          <button type="button" data-action="inputs" aria-label="Inputs"><svg class="i" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg></button><i></i>
+          <button type="button" data-tab="apps" aria-label="Continue watching"><svg class="i" viewBox="0 0 24 24"><path d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg></button>
+        </div>
+
+        <div class="grid3">
+          <button class="key" type="button" data-action="back" aria-label="Back"><svg class="i" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
+          <button class="key" type="button" data-action="menu" aria-label="Menu"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+          <button class="key" type="button" data-action="home" aria-label="Home"><svg class="i" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></button>
+        </div>
+
+        <div class="dial-zone">
+        <div id="dial" class="dial" role="group" aria-label="Direction pad. Drag OK like a joystick.">
+          <div class="ring"></div>
+          <button class="chev up" type="button" data-dir="up" aria-label="Up"><svg class="i" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg></button>
+          <button class="chev left" type="button" data-dir="left" aria-label="Left"><svg class="i" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="chev right" type="button" data-dir="right" aria-label="Right"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button class="chev down" type="button" data-dir="down" aria-label="Down"><svg class="i" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button>
+          <button id="ok" class="ok" type="button" aria-label="OK">OK</button>
+        </div>
+        </div>
+
+        <div class="grid3">
+          <button class="key" type="button" data-action="rewind" data-repeat aria-label="Rewind"><svg class="i" viewBox="0 0 24 24"><path d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z"/></svg></button>
+          <button class="key play" type="button" data-action="play_pause" aria-label="Play or pause"><svg class="i" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+          <button class="key" type="button" data-action="fast_forward" data-repeat aria-label="Fast forward"><svg class="i" viewBox="0 0 24 24"><path d="M11.933 12.8a1 1 0 000-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.333-4zM19.933 12.8a1 1 0 000-1.6l-5.333-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.333-4z"/></svg></button>
+        </div>
+        <div class="grid4">
+          <button class="key" type="button" data-action="volume_down" data-repeat aria-label="Volume down"><svg class="i" viewBox="0 0 24 24"><path d="M20 12H4"/></svg></button>
+          <button class="key" type="button" data-action="mute" aria-label="Mute"><svg class="i" viewBox="0 0 24 24"><path d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg></button>
+          <button class="key" type="button" data-action="volume_up" data-repeat aria-label="Volume up"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></button>
+          <button class="key ch" type="button" data-action="channel_up" data-repeat aria-label="Channel up"><span>CH</span><svg class="i" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg></button>
+        </div>
+
+        <form id="text-form" class="type">
+          <svg class="i" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input id="text" maxlength="500" autocomplete="off" autocapitalize="off" enterkeyhint="send" aria-label="Text for the TV" placeholder="Type on TV (Netflix, YouTube…)">
+          <button id="send" class="send" type="submit">ENTER</button>
+        </form>
+        <div id="pills" class="pills" aria-label="Home screen apps"></div>
+      </section>
+
+      <section id="view-apps" class="view" aria-label="Apps" hidden>
+        <h1>Apps</h1>
+        <input id="app-search" class="search" type="search" autocomplete="off" aria-label="Search apps" placeholder="Search apps">
+        <div id="watch-block">
+          <div class="label">Continue watching</div>
+          <div id="watch" class="strip"></div>
+        </div>
+        <div class="label" id="apps-label">All apps</div>
+        <div id="apps" class="tiles"></div>
+      </section>
+
+      <section id="view-live" class="view" aria-label="Live TV" hidden>
+        <div class="live-head">
+          <img src="/icon.png" alt="">
+          <b>Joshi TV</b>
+          <button id="live-find" type="button" aria-label="Search channels"><svg class="i" viewBox="0 0 24 24"><path d="M21 21l-5.2-5.2M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg></button>
+        </div>
+        <input id="live-search" type="search" autocomplete="off" autocapitalize="off" placeholder="Search channels" aria-label="Search channels" hidden>
+        <div id="live-hero" class="hero">
+          <video id="live-video" playsinline controls hidden></video>
+          <span id="live-label"></span>
+        </div>
+        <div class="live-now">
+          <i><img id="live-now-logo" alt="" hidden></i>
+          <div><b id="live-now-title">Choose a channel</b><small id="live-now-time"></small></div>
+        </div>
+        <div class="live-keys" aria-label="TV controls">
+          <button type="button" data-action="channel_down" data-repeat>Ch −</button><button type="button" data-action="channel_up" data-repeat>Ch +</button><button type="button" data-action="volume_down" data-repeat>Vol −</button><button type="button" data-action="mute">Mute</button><button type="button" data-action="volume_up" data-repeat>Vol +</button>
+        </div>
+        <div class="where" role="group" aria-label="Watch on">
+          <button type="button" data-where="tv">Watch on TV</button><button type="button" data-where="phone">Watch on phone</button>
+        </div>
+        <div class="pills">
+          <button id="live-day" class="chip" type="button">Today</button>
+          <button id="live-filter" class="chip" type="button">All channels</button>
+        </div>
+        <p id="live-note" hidden></p>
+        <div id="live-rows"></div>
+        <div id="live-more"></div>
+      </section>
+
+      <section id="view-settings" class="view" aria-label="Settings" hidden>
+        <h1>Settings</h1>
+        <div class="card">
+          <div class="line"><span>TV</span><span id="tv-name">…</span></div>
+          <div class="line"><span>Connection</span><span id="tv-link">…</span></div>
+          <div class="line"><span>Phone remote keyboard</span><span id="tv-keyboard">…</span></div>
+        </div>
+        <div class="card">
+          <button class="line" type="button" data-action="settings"><span>Open TV settings</span><span>›</span></button>
+          <button class="line" type="button" data-action="inputs"><span>Inputs</span><span>›</span></button>
+          <button class="line" type="button" data-action="power"><span>Power menu</span><span>›</span></button>
+        </div>
+        <div class="card">
+          <label class="line"><span>Press sound and vibration</span><span class="switch"><input id="feedback" type="checkbox" aria-label="Press sound and vibration"><i></i></span></label>
+          <button id="forget" class="line danger" type="button"><span>Forget this phone</span></button>
+        </div>
+        <p>Works on your home Wi-Fi. Add this page to your home screen to use it like an app.</p>
+      </section>
+    </main>
+
+    <nav class="tabs" aria-label="Sections">
+      <button class="active" type="button" data-tab="remote"><svg class="i" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Remote</button>
+      <button type="button" data-tab="apps"><svg class="i" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>Apps</button>
+      <button type="button" data-tab="live"><svg class="i" viewBox="0 0 24 24"><path d="M8 3l4 4 4-4M4 7h16a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/></svg>Live TV</button>
+      <button type="button" data-tab="settings"><svg class="i" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Settings</button>
+    </nav>
+  </div>
+
+  <div id="keypad" class="sheet" hidden>
+    <div class="scrim" id="keypad-close"></div>
+    <div class="panel" role="dialog" aria-label="Keypad">
+      <div class="grid3">
+        <button class="key" type="button" data-action="digit_1">1</button><button class="key" type="button" data-action="digit_2">2</button><button class="key" type="button" data-action="digit_3">3</button>
+        <button class="key" type="button" data-action="digit_4">4</button><button class="key" type="button" data-action="digit_5">5</button><button class="key" type="button" data-action="digit_6">6</button>
+        <button class="key" type="button" data-action="digit_7">7</button><button class="key" type="button" data-action="digit_8">8</button><button class="key" type="button" data-action="digit_9">9</button>
+        <button class="key small" type="button" data-action="channel_down" data-repeat>Ch −</button><button class="key" type="button" data-action="digit_0">0</button><button class="key small" type="button" data-action="channel_up" data-repeat>Ch +</button>
+        <button class="key small" type="button" data-action="backspace" data-repeat>Delete</button><button class="key small" type="button" data-action="previous">Prev</button><button class="key small" type="button" data-action="next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="live-sheet" class="sheet" hidden>
+    <div class="scrim" id="live-sheet-close"></div>
+    <div class="panel filters" id="live-filters" role="dialog" aria-label="Filters"></div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const tokenKey = 'phone-remote-token';
+    const feedbackKey = 'phone-remote-feedback';
+    const REQUEST_MS = 5000;
+    const LONG_PRESS_MS = 500;
+
+    const stored = key => { try { return localStorage.getItem(key); } catch (_) { return null; } };
+    const store = (key, value) => {
+      try { value === null ? localStorage.removeItem(key) : localStorage.setItem(key, value); } catch (_) { }
+    };
+
+    let token = stored(tokenKey) || '';
+    let feedback = stored(feedbackKey) !== 'off';
+
+    let toastTimer = 0;
+    function toast(text) {
+      $('toast').textContent = text;
+      $('toast').classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => $('toast').classList.remove('show'), 2600);
+    }
+
+    /** Browsers word a lost connection differently, and none of them in words for a person. */
+    const problem = error => error.name === 'AbortError' || error instanceof TypeError ? 'TV is unreachable' : error.message;
+
+    function notice(text) {
+      $('notice').textContent = text;
+      $('notice').hidden = !text;
+    }
+
+    function setStatus(state, text) {
+      $('status-dot').className = 'dot ' + state;
+      $('status-text').textContent = text;
+      $('tv-link').textContent = state === 'on' ? 'Connected' : text;
+    }
+
+    function showShell(paired) {
+      $('pair-view').hidden = paired;
+      $('shell').hidden = !paired;
+    }
+
+    async function api(path, data) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), REQUEST_MS);
+      try {
+        const response = await fetch(path, {
+          method: data === undefined ? 'GET' : 'POST',
+          signal: controller.signal,
+          headers: { 'Content-Type': 'application/json', ...(token ? { 'X-Remote-Token': token } : {}) },
+          body: data === undefined ? undefined : JSON.stringify(data)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          if (response.status === 401) { token = ''; store(tokenKey, null); showShell(false); }
+          throw new Error(result.error || result.message || 'TV did not accept that');
+        }
+        return result;
+      } finally { clearTimeout(timer); }
+    }
+
+    // One command at a time, so presses reach the TV in order. A stalled network skips presses instead of
+    // queueing them: the joystick must stop moving the TV as soon as the finger lifts.
+    let chain = Promise.resolve();
+    let waiting = 0;
+    function send(action, value) {
+      if (waiting > 2) return Promise.resolve(false);
+      waiting++;
+      chain = chain.then(() => api('/api/action', { action, value }))
+        .then(() => true, error => {
+          toast(problem(error));
+          return false;
+        })
+        .finally(() => { waiting--; });
+      return chain;
+    }
+
+    let audio = null;
+    function tick() {
+      if (!feedback) return;
+      if (navigator.vibrate) navigator.vibrate(10);
+      try {
+        audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === 'suspended') audio.resume();
+        const tone = audio.createOscillator(), gain = audio.createGain(), now = audio.currentTime;
+        tone.frequency.setValueAtTime(140, now);
+        tone.frequency.exponentialRampToValueAtTime(40, now + .04);
+        gain.gain.setValueAtTime(.12, now);
+        gain.gain.exponentialRampToValueAtTime(.01, now + .04);
+        tone.connect(gain).connect(audio.destination);
+        tone.start(now);
+        tone.stop(now + .04);
+      } catch (_) { }
+    }
+
+    // ---- Buttons. A tap acts on release, so a scroll that starts on a button presses nothing.
+
+    function bindButton(button) {
+      const action = button.dataset.action, repeats = 'repeat' in button.dataset;
+      let timer = 0, ticker = 0, repeated = false;
+      const stop = () => {
+        clearTimeout(timer); clearInterval(ticker); timer = ticker = 0;
+        button.classList.remove('down');
+      };
+      button.addEventListener('pointerdown', () => {
+        button.classList.add('down');
+        repeated = false;
+        if (!repeats) return;
+        timer = setTimeout(() => {
+          repeated = true;
+          const fire = () => { tick(); send(action); };
+          fire();
+          ticker = setInterval(fire, 140);
+        }, 320);
+      });
+      button.addEventListener('pointerup', () => {
+        if (!repeated) { tick(); send(action); }
+        stop();
+      });
+      button.addEventListener('pointercancel', stop);
+      button.addEventListener('pointerleave', stop);
+      button.addEventListener('contextmenu', event => event.preventDefault());
+      // A click with no pointer behind it: Enter or Space on a focused button, or a screen reader.
+      button.addEventListener('click', event => { if (event.detail === 0) send(action); });
+    }
+    document.querySelectorAll('[data-action]').forEach(bindButton);
+
+    // ---- The joystick. Drag OK and it follows the finger; a touch on the ring acts from the centre of the dial.
+
+    const ENTER_PX = 22, EXIT_PX = 14, FIRST_REPEAT_MS = 340, SLOWEST_MS = 240, FASTEST_MS = 90;
+    const dial = $('dial'), knob = $('ok');
+    let stick = null;
+
+    function lightUp(direction) {
+      document.querySelectorAll('.chev').forEach(chev => chev.classList.toggle('lit', chev.dataset.dir === direction));
+    }
+
+    /** Stays on the current axis until the other is clearly stronger, so a slightly diagonal drag does not flicker. */
+    function directionOf(x, y, distance, current) {
+      if (distance < (current ? EXIT_PX : ENTER_PX)) return null;
+      const across = Math.abs(x), along = Math.abs(y);
+      const sideways = current === 'left' || current === 'right' ? across * 1.3 >= along
+        : current ? across > along * 1.3 : across >= along;
+      return sideways ? (x < 0 ? 'left' : 'right') : (y < 0 ? 'up' : 'down');
+    }
+
+    function pressDirection(direction, wait) {
+      tick();
+      send(direction);
+      stick.repeat = setTimeout(() => {
+        pressDirection(direction, SLOWEST_MS - (SLOWEST_MS - FASTEST_MS) * stick.force);
+      }, wait);
+    }
+
+    function setDirection(direction) {
+      clearTimeout(stick.repeat);
+      stick.direction = direction;
+      lightUp(direction);
+      if (!direction) return;
+      stick.moved = true;
+      clearTimeout(stick.hold);
+      pressDirection(direction, FIRST_REPEAT_MS);
+    }
+
+    function followFinger(event) {
+      const x = event.clientX - stick.x, y = event.clientY - stick.y;
+      const distance = Math.hypot(x, y);
+      const scale = distance > stick.travel ? stick.travel / distance : 1;
+      knob.style.transform = `translate(${x * scale}px, ${y * scale}px)`;
+      stick.force = Math.min(distance / stick.travel, 1);
+      const direction = directionOf(x, y, distance, stick.direction);
+      if (direction !== stick.direction) setDirection(direction);
+    }
+
+    function letGo(pressOk) {
+      if (!stick) return;
+      clearTimeout(stick.repeat);
+      clearTimeout(stick.hold);
+      if (pressOk && stick.onOk && !stick.moved && !stick.held) { tick(); send('ok'); }
+      stick = null;
+      lightUp(null);
+      knob.classList.remove('pressed');
+      knob.classList.add('spring');
+      knob.style.transform = '';
+    }
+
+    dial.addEventListener('pointerdown', event => {
+      if (stick) return;
+      event.preventDefault();
+      dial.setPointerCapture(event.pointerId);
+      const box = dial.getBoundingClientRect();
+      const centreX = box.left + box.width / 2, centreY = box.top + box.height / 2;
+      const onOk = Math.hypot(event.clientX - centreX, event.clientY - centreY) <= knob.offsetWidth / 2 + 6;
+      stick = {
+        id: event.pointerId, onOk, direction: null, moved: false, held: false, force: 0, repeat: 0, hold: 0,
+        x: onOk ? event.clientX : centreX, y: onOk ? event.clientY : centreY, travel: box.width * .25
+      };
+      knob.classList.remove('spring');
+      if (onOk) {
+        knob.classList.add('pressed');
+        tick();
+        stick.hold = setTimeout(() => { stick.held = true; tick(); send('ok_hold'); }, LONG_PRESS_MS);
+      }
+      followFinger(event);
+    });
+    dial.addEventListener('pointermove', event => {
+      if (stick && event.pointerId === stick.id) followFinger(event);
+    });
+    dial.addEventListener('pointerup', event => {
+      if (stick && event.pointerId === stick.id) letGo(true);
+    });
+    dial.addEventListener('pointercancel', event => {
+      if (stick && event.pointerId === stick.id) letGo(false);
+    });
+    dial.addEventListener('contextmenu', event => event.preventDefault());
+    dial.querySelectorAll('button').forEach(button => button.addEventListener('click', event => {
+      if (event.detail === 0) send(button.dataset.dir || 'ok');
+    }));
+
+    // On a computer, the keyboard is the remote.
+    const computerKeys = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', Enter: 'ok', Escape: 'back', Backspace: 'back' };
+    document.addEventListener('keydown', event => {
+      if (event.target.matches('input, button') || $('shell').hidden || !computerKeys[event.key]) return;
+      event.preventDefault();
+      send(computerKeys[event.key]);
+    });
+
+    // ---- Tabs
+
+    function showTab(name) {
+      for (const view of ['remote', 'apps', 'live', 'settings']) $('view-' + view).hidden = view !== name;
+      document.querySelectorAll('.tabs [data-tab]').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === name));
+      $('views').scrollTop = 0;
+      if (name === 'apps') { loadLists().catch(() => { }); loadArt(); }
+      if (name === 'settings') loadCast();
+      if (name === 'live') openLive();
+      else if (!$('live-video').paused) $('live-video').pause();
+    }
+    document.querySelectorAll('[data-tab]').forEach(button => {
+      button.addEventListener('click', () => { tick(); showTab(button.dataset.tab); });
+    });
+    $('status').onclick = () => { tick(); showTab('settings'); };
+    $('open-keypad').onclick = () => { tick(); $('keypad').hidden = false; };
+    $('keypad-close').onclick = () => { $('keypad').hidden = true; };
+
+    // ---- Apps
+
+    const CHIPS = {
+      'com.netflix.ninja': ['N', 'red'],
+      'com.google.android.youtube.tv': ['', 'red'],
+      'com.amazon.amazonvideo.livingroom': ['P', 'sky'],
+      'com.android.vending': ['', 'green'],
+      'com.sonyliv': ['S', 'violet'],
+      'in.startv.hotstar': ['J', 'blue'],
+      'com.shemaroo.shemarootv': ['S', 'orange'],
+      'org.videolan.vlc': ['V', 'orange'],
+      'com.graymatrix.did': ['Z', 'violet'],
+      'com.spotify.tv.android': ['', 'green']
+    };
+    let apps = [];
+    const artUrls = new Map();
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    function openApp(app) {
+      tick();
+      api('/api/app', { package: app.package })
+        .then(() => { toast('Opening ' + app.name); showTab('remote'); })
+        .catch(error => toast(problem(error)));
+    }
+
+    function renderChips() {
+      const row = $('pills');
+      row.replaceChildren();
+      for (const app of apps.filter(item => item.home)) {
+        const [mark, colour] = CHIPS[app.package] || [app.name.charAt(0), ''];
+        const chip = element('button', 'chip ' + colour);
+        chip.type = 'button';
+        chip.append(mark ? element('b', '', mark) : element('u'), element('span', '', app.name));
+        chip.onclick = () => openApp(app);
+        row.append(chip);
+      }
+      const all = element('button', 'chip', 'All apps');
+      all.type = 'button';
+      all.onclick = () => { tick(); showTab('apps'); };
+      row.append(all);
+    }
+
+    function artFor(pkg, name) {
+      const art = element('span', 'art');
+      const image = element('img');
+      image.alt = '';
+      image.dataset.pkg = pkg;
+      image.onload = () => image.classList.add('ready');
+      if (artUrls.get(pkg)) image.src = artUrls.get(pkg);
+      art.append(element('em', '', name.charAt(0)), image);
+      return art;
+    }
+
+    function renderApps() {
+      const grid = $('apps');
+      grid.replaceChildren();
+      for (const app of apps) {
+        const tile = element('button', 'tile');
+        tile.type = 'button';
+        tile.dataset.name = app.name.toLowerCase();
+        tile.append(artFor(app.package, app.name), element('strong', '', app.name));
+        tile.onclick = () => openApp(app);
+        grid.append(tile);
+      }
+      filterApps();
+    }
+
+    function renderWatch(rows) {
+      const strip = $('watch');
+      strip.replaceChildren();
+      $('watch-block').dataset.empty = rows.length ? '' : 'true';
+      const names = Object.fromEntries(apps.map(app => [app.package, app.name]));
+      for (const row of rows) {
+        const tile = element('button', 'tile');
+        tile.type = 'button';
+        tile.append(artFor(row.app, row.title), element('strong', '', row.title),
+          element('small', '', [names[row.app], row.subtitle].filter(Boolean).join(' · ')));
+        tile.onclick = () => {
+          tick();
+          api('/api/watch/open', { index: row.index })
+            .then(() => { toast('Opening ' + row.title); showTab('remote'); })
+            .catch(error => toast(problem(error)));
+        };
+        strip.append(tile);
+      }
+      filterApps();
+    }
+
+    function filterApps() {
+      const query = $('app-search').value.trim().toLowerCase();
+      let shown = 0;
+      $('apps').querySelectorAll('.tile').forEach(tile => {
+        tile.hidden = !tile.dataset.name.includes(query);
+        if (!tile.hidden) shown++;
+      });
+      $('watch-block').hidden = !!query || $('watch-block').dataset.empty === 'true';
+      $('apps-label').textContent = query ? (shown ? 'Results' : 'No apps match') : `All apps (${shown})`;
+    }
+    $('app-search').addEventListener('input', filterApps);
+
+    async function loadLists() {
+      const [watch, list] = await Promise.all([api('/api/watch'), api('/api/apps')]);
+      apps = list;
+      renderChips();
+      renderApps();
+      renderWatch(watch);
+      if (!$('view-apps').hidden) loadArt();
+    }
+
+    // One banner at a time: the TV has 1 GB of RAM, and keys must keep moving while these load.
+    let loadingArt = false;
+    async function loadArt() {
+      if (loadingArt) return;
+      loadingArt = true;
+      try {
+        const wanted = new Set([...document.querySelectorAll('img[data-pkg]')].map(image => image.dataset.pkg));
+        for (const pkg of wanted) {
+          if (!artUrls.has(pkg)) {
+            const response = await fetch('/api/icon/' + pkg, { headers: { 'X-Remote-Token': token } });
+            artUrls.set(pkg, response.ok ? URL.createObjectURL(await response.blob()) : '');
+          }
+          if (!artUrls.get(pkg)) continue;
+          document.querySelectorAll('img[data-pkg]').forEach(image => {
+            if (image.dataset.pkg === pkg && !image.src) image.src = artUrls.get(pkg);
+          });
+        }
+      } catch (_) { } finally { loadingArt = false; }
+    }
+
+    // ---- TV name
+
+
+    async function loadCast() {
+      try { $('tv-name').textContent = (await api('/api/cast')).name; } catch (_) { }
+    }
+
+    // ---- Live TV
+
+    const LIVE_LOGOS = 'https://jiotvimages.cdn.jio.com/dare_images/images/';
+    const LIVE_POSTERS = 'https://jiotvimages.cdn.jio.com/dare_images/shows/';
+    const LIVE_PAGE = 30;
+    const LIVE_CACHE_MS = 12 * 60 * 60 * 1000;
+    const LIVE_KEY_MS = 5 * 60 * 60 * 1000;
+    const LIVE_CATEGORIES = ['Entertainment', 'Movies', 'News', 'Sports', 'Kids', 'Music', 'Infotainment', 'Lifestyle', 'Devotional', 'Business', 'Educational'];
+    const LIVE_LANGUAGES = ['Hindi', 'Gujarati', 'English'];
+    const liveSchedules = new Map();
+    const liveQueue = [];
+    let channels = [];
+    let liveMatches = [];
+    let liveDrawn = 0;
+    let liveLoading = false;
+    let liveWhere = stored('live-where') === 'phone' ? 'phone' : 'tv';
+    let liveDay = 0;
+    let liveFilter = null;
+    let liveQuery = '';
+    let liveCurrent = null;
+    let liveFetching = 0;
+    let liveBase = '';
+    let liveBaseTime = 0;
+    let tvApp = '';
+
+    const clock = time => new Date(time).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const clock12 = time => new Date(time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    function parseChannels(text) {
+      const found = [];
+      const attr = (line, key) => { const match = line.match(new RegExp(key + '="([^"]*)"')); return match ? match[1] : ''; };
+      let info = null, locked = false;
+      for (const raw of text.split('\n')) {
+        const line = raw.trim();
+        if (line.startsWith('#EXTINF')) { info = line; locked = false; }
+        else if (line.startsWith('#KODIPROP')) locked = true;
+        else if (info && line.startsWith('http')) {
+          const name = attr(info, 'tvg-name');
+          if (name && !/^test\s*\w?\d*(\s*hd)?$/i.test(name)) {
+            found.push({ id: attr(info, 'tvg-id'), name, logo: attr(info, 'tvg-logo').split('/').pop(),
+              language: attr(info, 'tvg-language'), category: attr(info, 'tvg-type'), locked });
+          }
+          info = null;
+        }
+      }
+      return found.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+    }
+
+    async function liveFetch(path, ms) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), ms);
+      try {
+        const response = await fetch(path, { signal: controller.signal, headers: { 'X-Remote-Token': token } });
+        if (!response.ok) throw new Error('Live TV is not available');
+        return response;
+      } finally { clearTimeout(timer); }
+    }
+
+    async function loadChannels() {
+      try {
+        const saved = JSON.parse(stored('live-channels') || 'null');
+        if (saved && Date.now() - saved.time < LIVE_CACHE_MS) return saved.list;
+      } catch (_) { }
+      const list = parseChannels(await (await liveFetch('/api/live/playlist', 40000)).text());
+      store('live-channels', JSON.stringify({ time: Date.now(), list }));
+      return list;
+    }
+
+    // The key is fetched before any tap: iPhones only start a video from inside the tap itself.
+    async function prepareVideo() {
+      if (liveBase && Date.now() - liveBaseTime < LIVE_KEY_MS) return;
+      liveBase = (await api('/api/live/watch', {})).base;
+      liveBaseTime = Date.now();
+    }
+
+    async function openLive() {
+      applyWhere();
+      if (channels.length || liveLoading) return;
+      liveLoading = true;
+      $('live-note').hidden = false;
+      $('live-note').textContent = 'Loading channels…';
+      try {
+        channels = await loadChannels();
+        buildFilters();
+        drawChannels();
+        const last = channels.find(channel => channel.id === stored('live-last'));
+        if (last) showCurrent(last);
+      } catch (_) {
+        $('live-note').textContent = 'Can’t load channels. Check the TV is on, then open Live TV again.';
+      } finally { liveLoading = false; }
+    }
+
+    function applyWhere() {
+      $('view-live').classList.toggle('on-phone', liveWhere === 'phone');
+      document.querySelectorAll('[data-where]').forEach(button => button.classList.toggle('active', button.dataset.where === liveWhere));
+      const video = $('live-video');
+      if (liveWhere === 'tv') { video.pause(); video.removeAttribute('src'); video.load(); video.hidden = true; }
+      else prepareVideo().catch(() => { });
+      updateLabel();
+    }
+
+    function updateLabel() {
+      const name = liveCurrent ? liveCurrent.name : '';
+      $('live-label').hidden = liveWhere === 'phone' && !$('live-video').hidden;
+      const onTv = tvApp === 'Joshi TV' ? 'On your TV: ' : 'Last played: ';
+      $('live-label').textContent = liveWhere === 'tv' ? (name ? onTv + name : 'Tap a channel to play it on your TV')
+        : 'Tap a channel to watch it on this phone';
+    }
+
+    function drawChannels() {
+      const query = liveQuery.toLowerCase();
+      const canPlay = channel => liveWhere === 'tv' || !channel.locked;
+      liveMatches = channels.filter(channel => canPlay(channel)
+        && (!liveFilter || channel[liveFilter.kind] === liveFilter.value)
+        && (!query || channel.name.toLowerCase().includes(query)));
+      const note = $('live-note');
+      note.hidden = liveWhere === 'tv' && liveMatches.length > 0;
+      note.textContent = !liveMatches.length ? 'No channels here.'
+        : `${liveMatches.length} channels can play on this phone. The others are protected and only play on the TV.`;
+      $('live-rows').replaceChildren();
+      liveDrawn = 0;
+      $('views').scrollTop = 0;
+      drawMore();
+    }
+
+    function drawMore() {
+      const rows = $('live-rows');
+      for (const channel of liveMatches.slice(liveDrawn, liveDrawn + LIVE_PAGE)) {
+        const row = buildRow(channel);
+        rows.append(row);
+        rowWatcher.observe(row);
+      }
+      liveDrawn = Math.min(liveDrawn + LIVE_PAGE, liveMatches.length);
+    }
+
+    function buildRow(channel) {
+      const row = element('div', 'row');
+      row.channel = channel;
+      const logo = element('button', 'logo');
+      logo.type = 'button';
+      logo.setAttribute('aria-label', channel.name);
+      const image = document.createElement('img');
+      image.loading = 'lazy';
+      image.alt = '';
+      image.src = LIVE_LOGOS + channel.logo;
+      image.onerror = () => image.replaceWith(element('em', '', channel.name));
+      logo.append(image);
+      logo.onclick = () => watch(channel);
+      const shows = element('div', 'shows');
+      shows.append(showCard(channel, { title: channel.name, start: 0, end: 0, note: channel.language + ' · ' + channel.category }));
+      row.append(logo, shows);
+      return row;
+    }
+
+    function showCard(channel, show) {
+      const now = Date.now();
+      const onNow = liveDay === 0 && show.start <= now && now < show.end;
+      const card = element('button', 'show' + (onNow || !show.start ? '' : ' next'));
+      card.type = 'button';
+      card.append(element('b', '', show.title), element('small', '', show.note || `${clock(show.start)} - ${clock(show.end)}`));
+      if (onNow) {
+        const bar = element('i'), fill = element('u');
+        fill.style.width = Math.round(100 * (now - show.start) / (show.end - show.start)) + '%';
+        bar.append(fill);
+        card.append(bar);
+      }
+      card.onclick = () => {
+        if (onNow || !show.start) watch(channel);
+        else toast(`${show.title} is on at ${clock12(show.start)}`);
+      };
+      return card;
+    }
+
+    function schedule(id, day) {
+      const key = id + '#' + day;
+      if (!liveSchedules.has(key)) {
+        liveSchedules.set(key, new Promise(resolve => {
+          liveQueue.push({ key, id, day, resolve });
+          pumpSchedules();
+        }));
+      }
+      return liveSchedules.get(key);
+    }
+
+    // The newest request first, so the rows being looked at load before the ones already scrolled past.
+    function pumpSchedules() {
+      while (liveFetching < 3 && liveQueue.length) {
+        const job = liveQueue.pop();
+        liveFetching++;
+        liveFetch(`/api/live/epg/${job.id}/${job.day}`, 20000)
+          .then(response => response.json())
+          .then(data => (data.epg || []).filter(show => show.startEpoch && show.endEpoch && show.showname).map(show => ({
+            start: show.startEpoch, end: show.endEpoch, title: show.showname, poster: show.episodeThumbnail || '' })))
+          .catch(() => { liveSchedules.delete(job.key); return []; })
+          .then(shows => { job.resolve(shows); liveFetching--; pumpSchedules(); });
+      }
+    }
+
+    async function fillRow(row) {
+      const channel = row.channel, day = liveDay;
+      const shows = await schedule(channel.id, day);
+      if (!row.isConnected || day !== liveDay || !shows.length) return;
+      const now = Date.now();
+      const coming = day === 0 ? shows.filter(show => show.end > now) : shows;
+      if (!coming.length) return;
+      const box = row.querySelector('.shows');
+      box.replaceChildren();
+      if (coming[0].poster) {
+        const poster = document.createElement('img');
+        poster.loading = 'lazy';
+        poster.alt = '';
+        poster.src = LIVE_POSTERS + coming[0].poster;
+        poster.onerror = () => poster.remove();
+        box.append(poster);
+      }
+      for (const show of coming.slice(0, 12)) box.append(showCard(channel, show));
+    }
+
+    const rowWatcher = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        rowWatcher.unobserve(entry.target);
+        fillRow(entry.target);
+      }
+    }, { root: $('views'), rootMargin: '150px 0px' });
+    new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && liveDrawn < liveMatches.length) drawMore();
+    }, { root: $('views'), rootMargin: '500px 0px' }).observe($('live-more'));
+
+    async function showCurrent(channel) {
+      liveCurrent = channel;
+      updateLabel();
+      $('live-now-logo').hidden = false;
+      $('live-now-logo').src = LIVE_LOGOS + channel.logo;
+      $('live-now-title').textContent = channel.name;
+      $('live-now-time').textContent = channel.language + ' · ' + channel.category;
+      const shows = await schedule(channel.id, 0);
+      if (liveCurrent !== channel) return;
+      const now = Date.now();
+      const show = shows.find(item => item.start <= now && now < item.end);
+      if (!show) return;
+      $('live-now-title').textContent = show.title;
+      $('live-now-time').textContent = `${channel.name} | ${clock12(show.start)} | ${Math.round((show.end - show.start) / 60000)} mins`;
+      if (show.poster) $('live-hero').style.backgroundImage = `url("${LIVE_POSTERS + show.poster}")`;
+    }
+
+    async function watch(channel) {
+      tick();
+      showCurrent(channel);
+      store('live-last', channel.id);
+      if (liveWhere === 'tv') {
+        try {
+          await api('/api/live/play', { id: channel.id });
+          toast(channel.name + ' is playing on your TV');
+        } catch (error) { toast(problem(error)); }
+        return;
+      }
+      if (!liveBase) { toast('Getting ready. Tap the channel again.'); prepareVideo().catch(() => { }); return; }
+      const video = $('live-video');
+      video.hidden = false;
+      updateLabel();
+      video.src = liveBase + channel.id + '.m3u8';
+      video.play().catch(() => { });
+      $('views').scrollTop = 0;
+    }
+
+    $('live-video').addEventListener('error', () => {
+      if (liveWhere === 'phone' && $('live-video').getAttribute('src')) toast('This channel isn’t playing right now. Try another one.');
+    });
+    document.querySelectorAll('[data-where]').forEach(button => button.addEventListener('click', () => {
+      tick();
+      liveWhere = button.dataset.where;
+      store('live-where', liveWhere);
+      applyWhere();
+      if (channels.length) drawChannels();
+    }));
+    $('live-day').onclick = () => {
+      tick();
+      liveDay = (liveDay + 1) % 7;
+      const date = new Date(Date.now() + liveDay * 86400000);
+      $('live-day').textContent = liveDay === 0 ? 'Today' : liveDay === 1 ? 'Tomorrow'
+        : date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
+      if (channels.length) drawChannels();
+    };
+    $('live-find').onclick = () => {
+      tick();
+      const search = $('live-search');
+      search.hidden = !search.hidden;
+      if (search.hidden) { search.value = ''; liveQuery = ''; drawChannels(); } else search.focus();
+    };
+    let liveTyping = 0;
+    $('live-search').addEventListener('input', event => {
+      clearTimeout(liveTyping);
+      liveTyping = setTimeout(() => { liveQuery = event.target.value.trim(); drawChannels(); }, 200);
+    });
+
+    function buildFilters() {
+      const box = $('live-filters');
+      box.replaceChildren();
+      const add = (title, kind, names) => {
+        box.append(element('h2', '', title));
+        const list = element('div');
+        for (const name of names) {
+          const button = element('button', '', name);
+          button.type = 'button';
+          button.classList.toggle('active', liveFilter ? liveFilter.value === name : name === 'All channels');
+          button.onclick = () => {
+            tick();
+            liveFilter = kind ? { kind, value: name } : null;
+            $('live-filter').textContent = name;
+            $('live-sheet').hidden = true;
+            buildFilters();
+            drawChannels();
+          };
+          list.append(button);
+        }
+        box.append(list);
+      };
+      const all = key => [...new Set(channels.map(channel => channel[key]).filter(Boolean))];
+      const count = key => { const totals = {}; channels.forEach(c => { totals[c[key]] = (totals[c[key]] || 0) + 1; }); return totals; };
+      const categories = all('category');
+      const totals = count('language');
+      add('Show', null, ['All channels']);
+      add('Categories', 'category', [...LIVE_CATEGORIES.filter(name => categories.includes(name)),
+        ...categories.filter(name => !LIVE_CATEGORIES.includes(name))]);
+      add('Languages', 'language', [...LIVE_LANGUAGES.filter(name => totals[name]),
+        ...all('language').filter(name => !LIVE_LANGUAGES.includes(name)).sort((a, b) => totals[b] - totals[a])]);
+    }
+    $('live-filter').onclick = () => { tick(); if (channels.length) $('live-sheet').hidden = false; };
+    $('live-sheet-close').onclick = () => { $('live-sheet').hidden = true; };
+
+    // ---- Typing
+
+    const syncSend = () => { $('send').textContent = $('text').value ? 'SEND' : 'ENTER'; };
+    $('text').addEventListener('input', syncSend);
+    $('text-form').onsubmit = event => {
+      event.preventDefault();
+      tick();
+      const text = $('text').value;
+      if (!text) { send('enter'); return; }
+      send('text', text).then(sent => {
+        if (!sent) return;
+        $('text').value = '';
+        syncSend();
+        toast('Sent to TV');
+      });
+    };
+    $('mic').onclick = () => {
+      tick();
+      $('text').focus();
+      toast('Use the microphone on your phone’s keyboard');
+    };
+
+    // ---- Settings
+
+    $('feedback').checked = feedback;
+    $('feedback').onchange = () => {
+      feedback = $('feedback').checked;
+      store(feedbackKey, feedback ? null : 'off');
+      tick();
+    };
+    $('forget').onclick = () => {
+      if (!confirm('Forget this phone? You’ll need a new pairing code from the TV.')) return;
+      api('/api/unpair', {}).catch(() => { }).finally(() => {
+        token = '';
+        store(tokenKey, null);
+        online = false;
+        showShell(false);
+      });
+    };
+
+    // ---- Staying connected
+
+    function applyStatus(state) {
+      showShell(state.paired);
+      if (!state.paired) return;
+      setStatus('on', state.app || 'Connected');
+      if (tvApp !== state.app) { tvApp = state.app; updateLabel(); }
+      $('tv-keyboard').textContent = state.keyboard ? 'Active' : 'Not chosen';
+      notice(state.keyboard === false ? 'Arrows can’t reach other apps. On the TV, hold OK on Settings, choose Phone remote, then Choose the TV keyboard.' : '');
+    }
+
+    let online = false;
+    async function poll() {
+      if (document.hidden) return;
+      try {
+        const state = await api('/api/status');
+        applyStatus(state);
+        if (state.paired && !online) { await loadLists(); loadCast(); }
+        online = state.paired;
+      } catch (_) {
+        online = false;
+        showShell(true);
+        setStatus('off', 'Offline');
+        if (location.protocol === 'file:') toast('Open this page from the TV’s address, not from a file');
+      }
+    }
+
+    $('pair-form').onsubmit = async event => {
+      event.preventDefault();
+      try {
+        const result = await api('/api/pair', { code: $('code').value.trim() });
+        token = result.token;
+        store(tokenKey, token);
+        $('code').value = '';
+        await poll();
+      } catch (error) { toast(problem(error)); }
+    };
+
+    syncSend();
+    document.addEventListener('visibilitychange', poll);
+    window.addEventListener('pageshow', poll);
+    setInterval(poll, 4000);
+    poll();
+  </script>
+</body>
+</html>

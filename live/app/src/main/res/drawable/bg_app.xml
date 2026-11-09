@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A dark violet night with a faint glow at the top right. Drawn once, no animation. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape><gradient android:angle="315" android:endColor="#08070f" android:startColor="#17123a" /></shape>
+    </item>
+    <item>
+        <shape>
+            <gradient android:centerX="0.85" android:centerY="0.05" android:endColor="#000d0b1a"
+                android:gradientRadius="520dp" android:startColor="#3a7c5cff" android:type="radial" />
+        </shape>
+    </item>
+</layer-list>

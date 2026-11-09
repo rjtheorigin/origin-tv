@@ -1,0 +1,5 @@
+# Private project. The server binary and build output never go into git.
+build/
+app/build/
+.gradle/
+app/src/main/jniLibs/

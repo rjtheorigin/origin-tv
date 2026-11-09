@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Languages put first before the household has watched anything, as Jio names them (Hindi, English, Tamil,
+         Telugu, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, Odia...). Once channels are watched or
+         made favourites, their languages come first on their own. -->
+    <string-array name="preferred_languages" translatable="false">
+        <item>Hindi</item>
+        <item>English</item>
+    </string-array>
+    <!-- How many of those languages the Home screen copy (Live Channels, Origin TV's Home) holds, besides the
+         favourite and recently watched channels: each language adds its channels and two days of schedule. -->
+    <integer name="home_languages">2</integer>
+</resources>

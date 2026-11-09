@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The PatchWall-style Home (PatchHome.java), a private addition for this TV. English only on purpose. -->
+<resources>
+    <!-- Default Home style when Launcher settings has no choice saved: true opens the PatchWall-style Home. -->
+    <bool name="patch_home">true</bool>
+    <!-- The app row, in this order, after Inputs: only apps installed and enabled get a tile. -->
+    <string-array name="patch_home_apps" translatable="false">
+        <item>io.github.rjtheorigin.joshitv</item>
+        <item>com.netflix.ninja</item>
+        <item>com.amazon.amazonvideo.livingroom</item>
+        <item>in.startv.hotstar</item>
+        <item>com.google.android.youtube.tv</item>
+        <item>com.sonyliv</item>
+        <item>com.graymatrix.did</item>
+        <item>com.shemaroo.shemarootv</item>
+        <item>com.mitv.tvhome.mitvplus</item>
+        <item>com.android.vending</item>
+    </string-array>
+
+    <item name="patch_image_tag" type="id" />
+
+    <string name="patch_tab_home" translatable="false">Home</string>
+    <string name="patch_tab_live" translatable="false">Live TV</string>
+    <string name="patch_tab_movies" translatable="false">Movies</string>
+    <string name="patch_tab_shows" translatable="false">Shows</string>
+    <string name="patch_tab_sports" translatable="false">Sports</string>
+    <string name="patch_tab_kids" translatable="false">Kids</string>
+    <string name="patch_tab_music" translatable="false">Music</string>
+    <string name="patch_tab_news" translatable="false">News</string>
+
+    <string name="patch_row_live_now" translatable="false">Live now</string>
+    <string name="patch_row_apps" translatable="false">Apps</string>
+    <string name="patch_row_continue" translatable="false">Continue watching</string>
+    <string name="patch_row_movies_now" translatable="false">Movies on now</string>
+    <string name="patch_row_movies_soon" translatable="false">Films starting soon</string>
+    <string name="patch_row_shows_now" translatable="false">Shows on now</string>
+    <string name="patch_row_on_now" translatable="false">On now</string>
+    <string name="patch_row_up_next" translatable="false">Coming up</string>
+    <string name="patch_row_all_channels" translatable="false">All channels</string>
+
+    <string name="patch_tag_live" translatable="false">LIVE</string>
+    <string name="patch_until" translatable="false">until %1$s</string>
+    <string name="patch_at" translatable="false">at %1$s</string>
+    <string name="patch_meta" translatable="false">%1$s  •  %2$s – %3$s</string>
+    <string name="patch_inputs" translatable="false">Inputs</string>
+    <string name="patch_all_apps" translatable="false">All apps</string>
+    <string name="patch_guide" translatable="false">TV guide</string>
+    <string name="patch_empty_title" translatable="false">Joshi TV</string>
+    <string name="patch_empty_body" translatable="false">Live channels and films show here once Joshi TV has copied them to Live Channels.</string>
+
+    <string name="patch_switch_classic" translatable="false">Switch to classic Home</string>
+    <string name="home_style_state" translatable="false">Home style: %1$s</string>
+    <string name="home_style_patch" translatable="false">PatchWall-style</string>
+    <string name="home_style_classic" translatable="false">Classic</string>
+</resources>

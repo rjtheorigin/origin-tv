@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="preview_w">398dp</dimen>
+    <dimen name="preview_h">224dp</dimen>
+    <dimen name="edge">18dp</dimen>
+</resources>
