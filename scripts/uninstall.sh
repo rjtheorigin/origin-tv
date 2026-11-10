@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Undoes install.sh: gives Home back to the TV's own launcher, then removes Origin TV.
 #
-#   TV_HOST=192.168.1.50 scripts/uninstall.sh            Origin TV only (Joshi TV stays, with its sign-in)
-#   TV_HOST=192.168.1.50 JOSHI=1 scripts/uninstall.sh    Joshi TV too
+#   TV_HOST=192.168.1.50 scripts/uninstall.sh            Origin TV only (Live Indian TV stays, with its sign-in)
+#   TV_HOST=192.168.1.50 LIVE=1 scripts/uninstall.sh    Live Indian TV too
 #
 # Origin TV is removed only once another launcher owns Home, so the TV is never left without one.
 set -euo pipefail
@@ -43,5 +43,5 @@ fi
 "$PY" -I tools/tv.py "pm uninstall $ORIGIN"
 NOW=$("$PY" -I tools/tv.py "$HOME_QUERY" | tail -n 1 | tr -d '\r')
 echo "Home now resolves to $NOW"
-if [ "${JOSHI:-0}" = 1 ]; then "$PY" -I tools/tv.py "pm uninstall io.github.rjtheorigin.joshitv"; fi
+if [ "${LIVE:-0}" = 1 ]; then "$PY" -I tools/tv.py "pm uninstall io.github.rjtheorigin.liveindiantv"; fi
 echo "Done."

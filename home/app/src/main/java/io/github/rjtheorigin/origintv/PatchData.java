@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * What the PatchWall-style Home shows, read off the main thread:
- * - Joshi TV's channels and their schedule, from Android's TV database, where Joshi TV's Live Channels copy
+ * - Live Indian TV's channels and their schedule, from Android's TV database, where Live Indian TV's Live Channels copy
  *   (LiveSync) writes them. Only rows marked searchable are visible to the launcher, which LiveSync's are.
  * - The system's Watch Next rows (YouTube, SonyLIV, Mi TV+ on this TV), with their web posters.
  * - The apps of the app row, in the order of patch_home_apps.
@@ -28,11 +28,11 @@ import java.util.Map;
  */
 final class PatchData {
     static final String TAG = "TvHomePatch";
-    static final String JOSHI = "io.github.rjtheorigin.joshitv";
+    static final String LIVE_APP = "io.github.rjtheorigin.liveindiantv";
     /** The schedule read ahead of now: enough for "Starting soon". */
     private static final long AHEAD_MS = 6L * 60 * 60 * 1000;
 
-    /** One programme on one of Joshi TV's channels. Times are epoch milliseconds. */
+    /** One programme on one of Live Indian TV's channels. Times are epoch milliseconds. */
     static final class Program {
         final long channelRow;
         final String channelName, channelNumber, appLink;
@@ -99,8 +99,8 @@ final class PatchData {
     final List<App> apps = new ArrayList<>();
     long loadedAt;
 
-    static String joshiInputId() {
-        return TvContract.buildInputId(new ComponentName(JOSHI, JOSHI + ".LiveInput"));
+    static String liveInputId() {
+        return TvContract.buildInputId(new ComponentName(LIVE_APP, LIVE_APP + ".LiveInput"));
     }
 
     /** Everything at once. Runs on a background thread and never throws. */
@@ -123,10 +123,10 @@ final class PatchData {
         return data;
     }
 
-    /** Joshi TV's channels only: its input id is part of the address, so no selection is needed (one would be refused). */
+    /** Live Indian TV's channels only: its input id is part of the address, so no selection is needed (one would be refused). */
     private Map<Long, Channel> readChannels(ContentResolver cr) {
         Map<Long, Channel> byRow = new HashMap<>();
-        Uri uri = TvContract.buildChannelsUriForInput(joshiInputId());
+        Uri uri = TvContract.buildChannelsUriForInput(liveInputId());
         String[] columns = {TvContract.Channels._ID, TvContract.Channels.COLUMN_DISPLAY_NAME,
                 TvContract.Channels.COLUMN_DISPLAY_NUMBER, TvContract.Channels.COLUMN_APP_LINK_INTENT_URI};
         try (Cursor c = cr.query(uri, columns, null, null, null)) {

@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.app.Activity;
 import android.graphics.drawable.GradientDrawable;

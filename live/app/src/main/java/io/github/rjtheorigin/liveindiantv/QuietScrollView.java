@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.content.Context;
 import android.graphics.Rect;

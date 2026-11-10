@@ -5,7 +5,7 @@
     <bool name="patch_home">true</bool>
     <!-- The app row, in this order, after Inputs: only apps installed and enabled get a tile. -->
     <string-array name="patch_home_apps" translatable="false">
-        <item>io.github.rjtheorigin.joshitv</item>
+        <item>io.github.rjtheorigin.liveindiantv</item>
         <item>com.netflix.ninja</item>
         <item>com.amazon.amazonvideo.livingroom</item>
         <item>in.startv.hotstar</item>
@@ -45,8 +45,8 @@
     <string name="patch_inputs" translatable="false">Inputs</string>
     <string name="patch_all_apps" translatable="false">All apps</string>
     <string name="patch_guide" translatable="false">TV guide</string>
-    <string name="patch_empty_title" translatable="false">Joshi TV</string>
-    <string name="patch_empty_body" translatable="false">Live channels and films show here once Joshi TV has copied them to Live Channels.</string>
+    <string name="patch_empty_title" translatable="false">Live Indian TV</string>
+    <string name="patch_empty_body" translatable="false">Live channels and films show here once Live Indian TV has copied them to Live Channels.</string>
 
     <string name="patch_switch_classic" translatable="false">Switch to classic Home</string>
     <string name="home_style_state" translatable="false">Home style: %1$s</string>

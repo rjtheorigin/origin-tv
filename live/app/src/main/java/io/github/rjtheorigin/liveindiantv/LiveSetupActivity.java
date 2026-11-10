@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.io.IOException;
 
 /**
- * Opened by Live Channels when Joshi TV is picked under "Set up your sources". It copies the channel list, which
+ * Opened by Live Channels when Live Indian TV is picked under "Set up your sources". It copies the channel list, which
  * takes a few seconds, and leaves logos and the guide to the background job.
  */
 public class LiveSetupActivity extends Activity {

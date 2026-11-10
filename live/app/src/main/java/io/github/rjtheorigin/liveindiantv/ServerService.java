@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.util.Log;
 import java.io.IOException;
 
 /**
- * Lets the launcher's phone page use the stream server while Joshi TV is closed. Binding starts the server, and
+ * Lets the launcher's phone page use the stream server while Live Indian TV is closed. Binding starts the server, and
  * the last client leaving stops it. Only an app signed with the same key can bind.
  */
 public class ServerService extends Service {

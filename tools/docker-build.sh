@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Build Origin TV (home) or Joshi TV (live) inside Docker, so this computer needs no JDK or Android SDK.
+# Build Origin TV (home) or Live Indian TV (live) inside Docker, so this computer needs no JDK or Android SDK.
 # From CleanYourTV's tools/docker-build.sh (MIT).
 # Usage: tools/docker-build.sh [home | live] [gradle task ...]
 #   tools/docker-build.sh                                  Origin TV, assembleRelease
-#   tools/docker-build.sh live                             Joshi TV
+#   tools/docker-build.sh live                             Live Indian TV
 #   tools/docker-build.sh home testReleaseUnitTest lintRelease assembleRelease
 # The APK lands where a native build puts it (<project>/app/build/outputs/apk/release/).
 # With signing/release.properties both apps are signed with the Origin TV key; otherwise with a debug key kept in the

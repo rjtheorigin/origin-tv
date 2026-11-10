@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Joshi TV</string>
-    <string name="starting">Joshi TV starting</string>
+    <string name="app_name">Live Indian TV</string>
+    <string name="starting">Live Indian TV starting</string>
     <string name="please_wait">Please wait…</string>
     <string name="start_failed">Could not start. Press OK to try again.</string>
     <string name="login_title">Sign in to Jio</string>
@@ -72,10 +72,10 @@
     <string name="paused">Paused</string>
     <string name="catchup_failed">This programme cannot be watched again right now.</string>
     <string name="now_time">Now · %1$s – %2$s</string>
-    <string name="live_setup_title">Joshi TV in Live Channels</string>
+    <string name="live_setup_title">Live Indian TV in Live Channels</string>
     <string name="live_setup_working">Adding your Hindi, Gujarati, favourite and recently watched channels…</string>
     <string name="live_setup_done">Added %1$d channels. Their logos and guide fill in over the next few minutes.</string>
-    <string name="live_setup_signed_out">Joshi TV is signed out of Jio. Open Joshi TV, sign in, then set up this source again.</string>
+    <string name="live_setup_signed_out">Live Indian TV is signed out of Jio. Open Live Indian TV, sign in, then set up this source again.</string>
     <string name="live_setup_failed">The channels could not be added. Check the internet connection and try again.</string>
-    <string name="live_open_in_app">Open in Joshi TV</string>
+    <string name="live_open_in_app">Open in Live Indian TV</string>
 </resources>

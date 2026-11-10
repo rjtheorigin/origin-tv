@@ -42,7 +42,7 @@ final class GlobalKeyWatch {
     /** Log time of the newest press line read. A restarted logcat replays its buffer, and older lines are skipped. */
     private long lastLine;
 
-    /** Entries are "keycode:package/.Activity", e.g. "192:io.github.rjtheorigin.joshitv/.LiveTv". */
+    /** Entries are "keycode:package/.Activity", e.g. "192:io.github.rjtheorigin.liveindiantv/.LiveTv". */
     GlobalKeyWatch(Context context, String[] entries) {
         this.context = context;
         for (String entry : entries) {

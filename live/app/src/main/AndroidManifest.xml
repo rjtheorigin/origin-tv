@@ -3,11 +3,11 @@
 
     <!-- Lets only an app signed with this app's key (the launcher) start the stream server. -->
     <permission
-        android:name="io.github.rjtheorigin.joshitv.START_SERVER"
+        android:name="io.github.rjtheorigin.liveindiantv.START_SERVER"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Live Channels: Joshi TV writes its own channels and guide into Android's TV database. -->
+    <!-- Live Channels: Live Indian TV writes its own channels and guide into Android's TV database. -->
     <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA" />
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
     <!-- Keeps the twice-a-day guide refresh scheduled after a restart. -->
@@ -37,13 +37,13 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- The remote's MI button opens this: Joshi TV straight to the channel guide. The app icon opens Home. -->
+        <!-- The remote's MI button opens this: Live Indian TV straight to the channel guide. The app icon opens Home. -->
         <activity-alias
             android:name=".LiveTv"
             android:exported="true"
             android:label="@string/nav_live"
             android:targetActivity=".MainActivity" />
-        <!-- Joshi TV as a source in the Live Channels app. -->
+        <!-- Live Indian TV as a source in the Live Channels app. -->
         <service
             android:name=".LiveInput"
             android:exported="true"
@@ -66,6 +66,6 @@
         <service
             android:name=".ServerService"
             android:exported="true"
-            android:permission="io.github.rjtheorigin.joshitv.START_SERVER" />
+            android:permission="io.github.rjtheorigin.liveindiantv.START_SERVER" />
     </application>
 </manifest>

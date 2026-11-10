@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Origin TV: installs the launcher (this folder) on the TV as the default home screen. ../install.sh runs it for you,
-# after Joshi TV. Adapted from CleanYourTV's launcher/build-and-install.sh (MIT), whose Home guard and rollback it keeps.
+# after Live Indian TV. Adapted from CleanYourTV's launcher/build-and-install.sh (MIT), whose Home guard and rollback it keeps.
 #   APK=<path>      install that APK instead of this folder's build (the release APK); implies SKIP_BUILD=1
 #   PHONE_REMOTE=1  switch on the phone remote (an accessibility service and a keyboard in the launcher)
 # Build the launcher APK and install it on the TV as the default home screen.

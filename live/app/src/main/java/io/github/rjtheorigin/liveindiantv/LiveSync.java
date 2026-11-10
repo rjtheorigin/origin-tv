@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 /**
- * Copies part of Joshi TV into Android's TV database, where the Live Channels app reads it: every Hindi and Gujarati
+ * Copies part of Live Indian TV into Android's TV database, where the Live Channels app reads it: every Hindi and Gujarati
  * channel plus the favourite and recently watched ones, with logos and two days of schedule. The work runs off the
  * main thread, one request at a time with a pause in between, so the TV stays responsive while it runs.
  */
@@ -153,7 +153,7 @@ final class LiveSync {
         }
     }
 
-    /** The household's first languages' channels (Languages), favourites and recently watched, numbered as in Joshi TV. */
+    /** The household's first languages' channels (Languages), favourites and recently watched, numbered as in Live Indian TV. */
     private static List<Channel> wanted(Context context) throws IOException {
         Server.ensure(context);
         if (Server.needsLogin(context)) throw new IOException("signed out of Jio");

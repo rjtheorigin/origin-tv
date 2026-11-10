@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * reach of the Wi-Fi, and so does anything else the server adds later.
  */
 final class PhoneRemoteLive {
-    static final String APP = "io.github.rjtheorigin.joshitv";
+    static final String APP = "io.github.rjtheorigin.liveindiantv";
     static final String VIDEO_PATH = "/v/";
     static final String EPG_PATH = "/api/live/epg/";
     private static final String SERVER = "http://127.0.0.1:5001";
@@ -74,7 +74,7 @@ final class PhoneRemoteLive {
         pass(socket, "/epg/" + tail, "application/json", 15000);
     }
 
-    /** Opens Joshi TV full screen on that channel. It starts its own server. */
+    /** Opens Live Indian TV full screen on that channel. It starts its own server. */
     boolean playOnTv(String id) {
         if (!CHANNEL.matcher(id).matches()) return false;
         try {
@@ -178,7 +178,7 @@ final class PhoneRemoteLive {
         out.flush();
     }
 
-    /** Keeps the server up, starting it through Joshi TV when it is closed, and waits for it to answer. */
+    /** Keeps the server up, starting it through Live Indian TV when it is closed, and waits for it to answer. */
     private void hold() throws IOException {
         main.post(() -> {
             main.removeCallbacks(release);

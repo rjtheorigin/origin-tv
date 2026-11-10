@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A row of the PatchWall-style Home moved by position instead of Android's focus search, which looks outside the
- * row for the nearest card when the next one is not laid out yet (from Joshi TV's RowManager, tested on this TV).
+ * row for the nearest card when the next one is not laid out yet (from Live Indian TV's RowManager, tested on this TV).
  */
 final class PatchRowManager extends LinearLayoutManager {
     private int wanted = RecyclerView.NO_POSITION;

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Makes the release signing key once, in signing/ (git-ignored), with the JDK in the Docker build image.
 # Keep a copy of signing/ somewhere safe and private: an update installs over an earlier version only when it is
-# signed with the same key, and both apps must share it (Joshi TV lets only an app signed like it use its server).
+# signed with the same key, and both apps must share it (Live Indian TV lets only an app signed like it use its server).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 [ -f signing/release.properties ] && { echo "signing/release.properties already exists; keeping it." >&2; exit 1; }

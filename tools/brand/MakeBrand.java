@@ -21,47 +21,47 @@ import javax.imageio.ImageIO;
  * Draws the icons and banners of both apps, so the artwork is reproducible and has no photos in it.
  * Run from the repository root (tools/docker-build.sh's image has a JDK):
  *
- *   java -Djava.awt.headless=true tools/brand/MakeBrand.java
+ *   java -Djava.awt.headless=true -Duser.home=/tmp tools/brand/MakeBrand.java
  *
  * Writes home/app/src/main/res/{mipmap-xhdpi/ic_launcher.png, drawable-nodpi/banner.png} (Origin TV) and
- * live/app/src/main/res/drawable-nodpi/{icon.png, banner.png} (Joshi TV). The font is the launcher's Outfit (OFL).
+ * live/app/src/main/res/drawable-nodpi/{icon.png, banner.png} (Live Indian TV). The font is the launcher's Outfit (OFL).
  */
 public class MakeBrand {
     private static Font outfit;
 
     public static void main(String[] args) throws Exception {
         outfit = Font.createFont(Font.TRUETYPE_FONT, new File("home/app/src/main/res/font/outfit.ttf"));
-        write(joshiBanner(640, 360), "live/app/src/main/res/drawable-nodpi/banner.png");
-        write(joshiIcon(256), "live/app/src/main/res/drawable-nodpi/icon.png");
+        write(liveBanner(640, 360), "live/app/src/main/res/drawable-nodpi/banner.png");
+        write(liveIcon(256), "live/app/src/main/res/drawable-nodpi/icon.png");
         write(originBanner(640, 360), "home/app/src/main/res/drawable-nodpi/banner.png");
         write(originIcon(192), "home/app/src/main/res/mipmap-xhdpi/ic_launcher.png");
     }
 
-    // ---- Joshi TV: a TV with an antenna, "Joshi" and a red "TV" pill with a play mark, on deep violet ----------
+    // ---- Live Indian TV: a TV with an antenna, "Live Indian" and a red "TV" pill with a play mark, on deep violet ---
 
-    static BufferedImage joshiBanner(int w, int h) {
+    static BufferedImage liveBanner(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = start(img);
         g.setPaint(new GradientPaint(0, 0, new Color(0x1A0B3D), w, h, new Color(0x3B0F5C)));
         g.fillRect(0, 0, w, h);
         glow(g, w * 0.5f, h * 0.55f, h * 0.9f, new Color(0x7B2CBF), 0.35f);
-        joshiMark(g, w / 2f, h * 0.56f, h * 0.68f);
+        liveMark(g, w / 2f, h * 0.56f, h * 0.68f);
         g.dispose();
         return img;
     }
 
-    static BufferedImage joshiIcon(int s) {
+    static BufferedImage liveIcon(int s) {
         BufferedImage img = new BufferedImage(s, s, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = start(img);
         g.setPaint(new GradientPaint(0, 0, new Color(0x1A0B3D), s, s, new Color(0x3B0F5C)));
         g.fill(new RoundRectangle2D.Float(0, 0, s, s, s * 0.22f, s * 0.22f));
-        joshiMark(g, s / 2f, s * 0.58f, s * 0.6f);
+        liveMark(g, s / 2f, s * 0.58f, s * 0.6f);
         g.dispose();
         return img;
     }
 
     /** The mark centred at (cx, cy), about `size` tall. */
-    static void joshiMark(Graphics2D g, float cx, float cy, float size) {
+    static void liveMark(Graphics2D g, float cx, float cy, float size) {
         float tvW = size * 1.45f, tvH = size * 0.95f;
         float x = cx - tvW / 2, y = cy - tvH / 2;
         Color orange = new Color(0xFF8A00), magenta = new Color(0xE0218A);
@@ -80,9 +80,15 @@ public class MakeBrand {
         g.setStroke(new BasicStroke(size * 0.06f));
         g.setPaint(new GradientPaint(x, y, orange, x + tvW, y + tvH, magenta));
         g.draw(screen);
-        // "Joshi".
-        Shape word = text("Joshi", size * 0.40f, size * 0.012f);
+        // "Live Indian", made smaller when needed to fit inside the screen.
+        float wordPx = size * 0.30f;
+        Shape word = text("Live Indian", wordPx, size * 0.012f);
         Rectangle2D wb = word.getBounds2D();
+        float fit = (float) (tvW * 0.80 / wb.getWidth());
+        if (fit < 1f) {
+            word = text("Live Indian", wordPx * fit, size * 0.012f);
+            wb = word.getBounds2D();
+        }
         float wordY = y + tvH * 0.50f;
         fillAt(g, word, cx - (float) wb.getCenterX(), wordY - (float) wb.getMaxY(), Color.WHITE, size * 0.012f);
         // The red "TV" pill with a play triangle.

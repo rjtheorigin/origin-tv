@@ -17,7 +17,7 @@
 
     <!-- Apps pinned to the dock row at the bottom, in this order. Missing apps are skipped. -->
     <string-array name="dock_apps">
-        <item>io.github.rjtheorigin.joshitv</item>
+        <item>io.github.rjtheorigin.liveindiantv</item>
         <item>com.netflix.ninja</item>
         <item>com.amazon.amazonvideo.livingroom</item>
         <item>in.startv.hotstar</item>
@@ -37,8 +37,8 @@
     </string-array>
 
     <!-- The TV's Live TV / tuner app, offered at the end of the Inputs menu. Leave empty to omit. -->
-    <!-- Origin TV: Joshi TV is the Live TV app (the Inputs menu's last row). -->
-    <string name="live_tv_package" translatable="false">io.github.rjtheorigin.joshitv</string>
+    <!-- Origin TV: Live Indian TV is the Live TV app (the Inputs menu's last row). -->
+    <string name="live_tv_package" translatable="false">io.github.rjtheorigin.liveindiantv</string>
 
     <!-- Open the Live TV app above the first time Home comes up after the TV is switched on, for sets that are
          mostly used for broadcast TV. Once per boot: Home after that stays Home. Can also be set with
@@ -231,10 +231,10 @@
     <!-- Remote buttons that only the firmware's own global-key receiver gets, seen through the line it logs for each
          press ("receive ACTION_GLOBAL_BUTTON keyCode = N", Xiaomi's partnercustomizer), as "keycode:package/.Activity".
          Unlike app_keys this needs no key filtering, so held volume keys keep repeating. Needs READ_LOGS, which
-         install.sh grants. On Mi TVs the MI button (192) opens the Joshi TV channel guide; other TVs never log
+         install.sh grants. On Mi TVs the MI button (192) opens the Live Indian TV channel guide; other TVs never log
          this line, so it does nothing there. Empty = off. -->
     <string-array name="global_key_watch" translatable="false">
-        <item>192:io.github.rjtheorigin.joshitv/.LiveTv</item>
+        <item>192:io.github.rjtheorigin.liveindiantv/.LiveTv</item>
     </string-array>
 
     <!-- Package of the stock launcher, for TVs whose firmware turns it back on after it was disabled. XGIMI's

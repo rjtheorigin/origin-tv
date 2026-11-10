@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -355,7 +355,7 @@ public class MainActivity extends Activity implements Home.Host {
         }
     }
 
-    /** The MI button opens Joshi TV through this alias, straight to the channel guide. */
+    /** The MI button opens Live Indian TV through this alias, straight to the channel guide. */
     private static boolean isLiveTv(Intent intent) {
         return intent.getComponent() != null && intent.getComponent().getClassName().endsWith(".LiveTv");
     }

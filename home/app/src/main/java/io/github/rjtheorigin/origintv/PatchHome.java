@@ -45,9 +45,9 @@ import java.util.concurrent.Executors;
  * A PatchWall-style Home laid over the classic one, inside the same Home activity, so the Home key, boot, the phone
  * remote and the Inputs menu keep their tested paths. A tab bar (Home, Live TV, Movies, Shows, Sports, Kids, Music,
  * News, then Inputs and Settings), a hero with the focused programme's picture and details, and rows of cards:
- * Joshi TV's channels from Android's TV database, the app row, and Watch Next.
+ * Live Indian TV's channels from Android's TV database, the app row, and Watch Next.
  *
- * Like Joshi TV's own Home it moves focus itself on every arrow key, so a fast press never lands elsewhere.
+ * Like Live Indian TV's own Home it moves focus itself on every arrow key, so a fast press never lands elsewhere.
  * Launcher settings' "Home style" (or patch_home in patch_home.xml) switches it off; the classic Home is untouched.
  */
 final class PatchHome {
@@ -616,7 +616,7 @@ final class PatchHome {
                 showClassic();
                 break;
             case KIND_GUIDE:
-                start(new Intent().setComponent(new ComponentName(PatchData.JOSHI, PatchData.JOSHI + ".LiveTv"))
+                start(new Intent().setComponent(new ComponentName(PatchData.LIVE_APP, PatchData.LIVE_APP + ".LiveTv"))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case KIND_CONTINUE:
@@ -627,21 +627,21 @@ final class PatchHome {
         }
     }
 
-    /** Joshi TV's own link for the channel (written by its LiveSync), which plays it full screen. */
+    /** Live Indian TV's own link for the channel (written by its LiveSync), which plays it full screen. */
     private void watch(PatchData.Program program) {
         Intent intent = null;
         if (program.appLink != null) {
             try {
                 intent = Intent.parseUri(program.appLink, Intent.URI_INTENT_SCHEME);
                 String target = intent.getComponent() != null ? intent.getComponent().getPackageName() : intent.getPackage();
-                if (!PatchData.JOSHI.equals(target)) intent = null;   // only Joshi TV's own links are followed
+                if (!PatchData.LIVE_APP.equals(target)) intent = null;   // only Live Indian TV's own links are followed
             } catch (URISyntaxException e) {
                 Log.w(TAG, "bad channel link: " + e);
             }
         }
         if (intent == null) {
             PackageManager pm = activity.getPackageManager();
-            intent = pm.getLeanbackLaunchIntentForPackage(PatchData.JOSHI);
+            intent = pm.getLeanbackLaunchIntentForPackage(PatchData.LIVE_APP);
         }
         if (intent == null) return;
         start(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -670,7 +670,7 @@ final class PatchHome {
         }
     }
 
-    /** The hero shows a programme (or a Watch Next row); with nothing to show, a short note about Joshi TV. */
+    /** The hero shows a programme (or a Watch Next row); with nothing to show, a short note about Live Indian TV. */
     private void showHero(Item item) {
         heroItem = item;
         if (item == null) {

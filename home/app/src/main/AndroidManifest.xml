@@ -14,8 +14,8 @@
     <!-- The Continue watching row (config.xml continue_watching): reads the Watch Next table. A runtime
          permission, granted by build-and-install with pm grant rather than asked for on screen. -->
     <uses-permission android:name="android.permission.READ_TV_LISTINGS" />
-    <!-- Starts Joshi TV's stream server for the phone page's Live TV tab. Signature-level: same key only. -->
-    <uses-permission android:name="io.github.rjtheorigin.joshitv.START_SERVER" />
+    <!-- Starts Live Indian TV's stream server for the phone page's Live TV tab. Signature-level: same key only. -->
+    <uses-permission android:name="io.github.rjtheorigin.liveindiantv.START_SERVER" />
     <!-- global_key_watch: reads the firmware's log line for the MI button, so no service has to filter keys.
          A development permission, granted by build-and-install with pm grant. -->
     <uses-permission

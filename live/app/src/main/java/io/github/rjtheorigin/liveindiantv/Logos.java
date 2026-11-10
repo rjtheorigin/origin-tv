@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 final class Logos {
     private final int sizePx;
     private final boolean opaque;
-    /** Null for pictures kept in memory only, which are gone when Joshi TV closes. */
+    /** Null for pictures kept in memory only, which are gone when Live Indian TV closes. */
     private final LruCache<String, Bitmap> memory;
     private final ExecutorService pool = Executors.newFixedThreadPool(2);
     private final Handler main = new Handler(Looper.getMainLooper());

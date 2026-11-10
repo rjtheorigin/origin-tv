@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds JioTV Go (https://github.com/JioTV-Go/jiotv_go, CC BY 4.0) from source for 32-bit ARM Android and puts it
-# where Joshi TV bundles it: live/app/src/main/jniLibs/armeabi-v7a/libjiotvgo.so (git-ignored).
+# where Live Indian TV bundles it: live/app/src/main/jniLibs/armeabi-v7a/libjiotvgo.so (git-ignored).
 #
 #   server/build-jiotv-go.sh              the pinned version below
 #   VERSION=v3.23.0 server/build-jiotv-go.sh

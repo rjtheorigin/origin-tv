@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.content.Context;
 
@@ -19,7 +19,7 @@ final class Server {
     private static Process process;
     /** Bound by the launcher's phone page. */
     private static boolean held;
-    /** Joshi TV is on screen. */
+    /** Live Indian TV is on screen. */
     private static boolean viewing;
     /** Live Channels sessions and guide copies using the server. */
     private static int liveUsers;

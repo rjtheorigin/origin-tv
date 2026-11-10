@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 /** One programme in a channel's schedule. Times are epoch milliseconds. */
 final class Show {

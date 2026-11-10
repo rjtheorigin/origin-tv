@@ -291,7 +291,7 @@ final class PhoneRemoteServer {
         if ("POST".equals(method) && "/api/live/play".equals(path)) {
             boolean started = live.playOnTv(new JSONObject(body).optString("id", ""));
             respond(socket, started ? 200 : 404, "application/json",
-                    started ? "{\"message\":\"OK\"}" : error("Joshi TV is not available"));
+                    started ? "{\"message\":\"OK\"}" : error("Live Indian TV is not available"));
             return;
         }
         if ("POST".equals(method) && "/api/live/watch".equals(path)) {

@@ -1,4 +1,4 @@
-package io.github.rjtheorigin.joshitv;
+package io.github.rjtheorigin.liveindiantv;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -28,9 +28,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Joshi TV as a channel source for the Live Channels app. Live Channels owns the screen, the guide and the remote;
+ * Live Indian TV as a channel source for the Live Channels app. Live Channels owns the screen, the guide and the remote;
  * this plays the channel it tunes to into the picture area it hands over, through the same stream server and player
- * settings as Joshi TV. Live Channels' picture area is always marked secure, so Widevine channels can play in it.
+ * settings as Live Indian TV. Live Channels' picture area is always marked secure, so Widevine channels can play in it.
  */
 @OptIn(markerClass = UnstableApi.class)
 public class LiveInput extends TvInputService {
