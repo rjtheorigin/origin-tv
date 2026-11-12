@@ -2,13 +2,6 @@
 
 A PatchWall-style home screen for Android TV, with live Indian channels built in: **Live Indian TV** plays the
 channels of your own Jio plan.
-# Origin TV
-
-A PatchWall-style home screen for Android TV with **Live Indian TV** built in.
-
-Origin TV brings your live channels, movies, shows, sports, kids content, music, news, and streaming apps together in one TV-first interface.
-
----
 
 ## 📺 Product Showcase
 
