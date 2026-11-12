@@ -2,7 +2,52 @@
 
 A PatchWall-style home screen for Android TV, with live Indian channels built in: **Live Indian TV** plays the
 channels of your own Jio plan.
+# Origin TV
 
+A PatchWall-style home screen for Android TV with **Live Indian TV** built in.
+
+Origin TV brings your live channels, movies, shows, sports, kids content, music, news, and streaming apps together in one TV-first interface.
+
+---
+
+## 📺 Product Showcase
+
+### 01 — Origin TV
+![Origin TV Cover](./01%20Cover.png)
+
+### 02 — The Home Screen
+![Origin TV Home Screen](./02%20The%20home%20screen.png)
+
+### 03 — What You Get
+![What You Get](./03%20What%20you%20get.png)
+
+### 04 — Live Indian TV
+![Live Indian TV](./04%20Live%20Indian%20TV.png)
+
+### 05 — Private by Design
+![Private by Design](./05%20Private%20by%20design.png)
+
+### 06 — The Trade-offs
+![The Trade-offs](./06%20The%20trade-offs.png)
+
+### 07 — What You Need
+![What You Need](./07%20What%20you%20need.png)
+
+### 08 — Installation
+![Installation](./08%20Install.png)
+
+### 09 — Day One
+![Day One](./09%20Day%20one.png)
+
+---
+
+## 🚀 Installation
+
+See the installation instructions below or run:
+
+```bash
+chmod +x install.sh
+./install.sh
 - **Origin TV** is the home screen. It has tabs (Home, Live TV, Movies, Shows, Sports, Kids, Music, News), a large
   picture of what is on now, rows of live channels and films starting soon, your streaming apps as branded tiles,
   and a *Continue watching* row from the apps that share it. Your TV's inputs (HDMI, AV) are one press away, and so
